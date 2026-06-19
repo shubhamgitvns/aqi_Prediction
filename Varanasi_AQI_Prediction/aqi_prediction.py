@@ -5,4 +5,7 @@ print(data.head())
 
 # drop the specific column
 data = data.drop(columns=['Prominent Pollutant', 'No. Stations'])
-print(data.columns)
+
+print(data.isnull().sum())
+
+print(data.info())
