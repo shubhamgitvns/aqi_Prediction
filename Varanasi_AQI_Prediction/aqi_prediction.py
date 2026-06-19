@@ -15,23 +15,29 @@ data['date'] = pd.to_datetime(data['date'])
 # create the column of year
 data['Year'] = data['date'].dt.year
 
-yearly_aqi = data.groupby('Year')['Index Value'].mean()
-yearly_aqi = yearly_aqi.reset_index()
+# Create the gaping data table
 
-print(yearly_aqi['Index Value'])
 
-# Start fiting the model values
-x = yearly_aqi[['Year']]
-y = yearly_aqi['Index Value']
+yearly_aqi = data.groupby('Year')['Index Value'].mean().reset_index()
+
+gap_data = pd.DataFrame({
+    'Year': [2024,2025,2026],
+    'Index Value': [86.0,120.1233,184.43553]
+})
+
+yearly_aqi = pd.concat([yearly_aqi, gap_data], ignore_index=True)
+
+
+
+
+# # Start fiting the model values
+X = yearly_aqi['Year'].values.reshape(-1,1)
+y = yearly_aqi['Index Value'].values
 
 model = LinearRegression()
-model.fit(x,y)
+model.fit(X,y)
 
-print(model)
-print(model.coef_) # slope(m)
-print(model.intercept_) #intercept(b)
+# new_data = model.predict({'Year': [2027]})
 
-new_data = pd.DataFrame({'Year': [2027]})
-
-print(yearly_aqi)
+print(model.predict([[2027]]))
 
