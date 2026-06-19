@@ -9,3 +9,9 @@ data = data.drop(columns=['Prominent Pollutant', 'No. Stations'])
 print(data.isnull().sum())
 
 print(data.info())
+
+# Convert date in date-time
+
+data['date'] = pd.to_datetime(data['date'])
+
+print(data['date'])
